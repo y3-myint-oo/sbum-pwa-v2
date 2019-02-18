@@ -7,6 +7,7 @@ import transport from './transport_reducer';
 import warehouse from './warehouse_reducer';
 import supplyer from './supplyer_reducer';
 import employee from './employee_reducer';
+import agent from './agent_reducer';
 
 const rootReducer = combineReducers({
     datas,
@@ -17,5 +18,6 @@ const rootReducer = combineReducers({
     warehouse,
     supplyer,
     employee,
+    agent
 })
 export default rootReducer;

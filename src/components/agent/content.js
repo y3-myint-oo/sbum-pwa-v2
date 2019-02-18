@@ -39,6 +39,8 @@ import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
 
+import AgentFromUX from './agentform';
+
 const styles = theme => ({
    
      Onroot:{
@@ -246,23 +248,9 @@ const styles = theme => ({
 
 });
 
-class Supply extends Component{
-    render(){
-        console.log( )
-        const { classes  } = this.props;
-        return(
-            <SupplyContent classes={classes} />
-        )
-    }
-}
 
-function mapStateToProps(state) {
-    return {
-        setting:state.setting,
-        auth0: state.auth0,
-        features:state.features,
-    };
-} 
+
+
 const SupplyItems = [
     {id:"1",code:"co001",name:"ဌက်နီ",oname:"ဦးကောင်းတင့်",description:"",phone:["092328422","013134134"],addr:"အမှတ် (၂) အိပ်အမှတ် ၇ , မင်းတုန်းလမ်း",township:"ရွှေဘို",division:"မန္တလေးမြို့"},
     {id:"2",code:"b002",name:"ဆင်မင်း",oname:"ဦးမြချစ်",description:"",phone:["985376264","09232312"],addr:"",township:"ရွှေဘို",division:"မန္တလေးမြို့"},
@@ -289,7 +277,7 @@ class SupplyContent extends Component{
     constructor(props){
         super(props);
         this.state={
-            selectedItem:SupplyItems[0],  
+            selectedItem:this.props.agent[0],  
             selectedView:0, 
             dialogOpen:false,
             snackOpen:false,
@@ -333,7 +321,7 @@ class SupplyContent extends Component{
                         </div>
                         <Paper className={classes.paper} style={{marginTop:-20}}>
                             <GridList cellHeight={200} spacing={25} cols={1} className={classes.gridList}>
-                                {SupplyItems.map(item => (
+                                {this.props.agent.map(item => (
                                    <SupplyItemUI item={item} classes={classes} handleItem={this.handleSelectedItem}/>
                                 ))}
                             </GridList>    
@@ -351,7 +339,7 @@ class SupplyContent extends Component{
                     onClose={this.handleDialog}
                     >
                     <div style={getModalStyle()} className={classes.dialog}>
-                        <NewItemDialog  classes={classes} close={this.handleDialog} snackMsg={this.handleSnack}/> 
+                        <AgentFromUX  classes={classes} close={this.handleDialog} snackMsg={this.handleSnack}/> 
                     </div>
                 </Modal>   
                 <Snackbar
@@ -392,137 +380,6 @@ function getModalStyle() {
       transform: `translate(-${top}%, -${left}%)`,
     };
   }
-
-class NewItemDialog extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            unit:units[0],
-            sellPrice:0,
-        }
-        this.handleClose = this.handleClose.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-        this.handleSnackMessage= this.handleSnackMessage.bind(this);
-    } 
-    handleClose(){
-        console.log("Close")
-        this.props.close()
-    }
-    handleSave(){
-        console.log("Save")
-        this.props.close()
-    }
-    handleChangeUnit(){
-        console.log("Unit Change")
-    }
-    handleSnackMessage(){
-        this.props.close()
-        this.props.snackMsg()
-    }
-    render(){
-        const { classes } = this.props;
-        return(
-            <div>
-                <AppBar position='fixed'>
-                        <Toolbar>                       
-                        <Typography variant="h6" color="inherit" className={classes.flex}>
-                            ကုန်ပစ္စည်း အမျိုးအစာ အသစ်ထည့်မည်
-                        </Typography>
-                        <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
-                            <CloseIcon />
-                        </IconButton>
-                        </Toolbar>
-                </AppBar>
-                <div style={{paddingTop:50}} >
-                <Grid container spacing={24}>
-                    <Grid item xs={12} >
-                                <Typography variant="caption" gutterBottom align="left">
-                                    ကုန်ပစ္စည်းအမှတ်အသားဃူနစ်
-                                </Typography> 
-                                <spam className={classes.spacing} /> 
-                                <Input
-                                    defaultValue=""
-                                    inputProps={{
-                                    'aria-label': 'Description',
-                                    }}
-                                />
-                                
-                                    <IconButton aria-label="Auto">
-                                        <AutoIcon />
-                                    </IconButton>
-                               
-                                
-                    </Grid>
-                    <Grid item xs={6} >
-                                <TextField
-                                required
-                                id="standard-required"
-                                label="ကုန်ပစ္စည်းအမည်"
-                                defaultValue=" "
-                                className={classes.textField}
-                                margin="normal"
-                                />
-                    </Grid>
-                    <Grid item xs={6} >
-                                <TextField
-                                fullWidth
-                                id="standard-select-currency"
-                                select
-                                label="ကုန်ပစ္စည်းအတိုင်းအတာယူနစ်"
-                                value={this.state.unit}
-                                onChange={this.handleChangeUnit()}
-                                margin="normal"
-                                >
-                                {units.map(option => (
-                                    <MenuItem key={option.name} value={option.name}>
-                                    {option.name}
-                                    </MenuItem>
-                                ))}
-                                </TextField>
-                    </Grid>
-                    <Grid item xs={6} >
-                                <Typography variant="caption" gutterBottom align="left">
-                                    လက်ရှိရောင်းစျေး
-                                </Typography> 
-                                <spam className={classes.spacing} /> 
-                                <Input
-                                    defaultValue=""
-                                    inputProps={{
-                                    'aria-label': 'Description',
-                                    }}
-                                /> 
-                    </Grid>
-                    <Grid item xs={6} >
-                                <Typography variant="caption" gutterBottom align="left">
-                                    ၀ယ်စျေး
-                                </Typography> 
-                                <spam className={classes.spacing} /> 
-                                <Input
-                                    defaultValue=""
-                                    inputProps={{
-                                    'aria-label': 'Description',
-                                    }}
-                                />
-                    </Grid>
-                    <Grid item xs={6} >
-                        <Button  variant="outlined" color="primary" onClick={this.handleSnackMessage}>
-                            သိမ်းမည်
-                        </Button>   
-                        <spam className={classes.bpacing}/>
-                        <Button  variant="outlined" color="secondary" onClick={this.handleSnackMessage}>
-                            ပယ်ဖျက်မည်
-                        </Button>
-                    </Grid>
-
-
-                     
-                </Grid>
-                </div>
-            </div>
-        )
-    }
-}
-
 
 class SupplyItemUI extends Component{
     constructor(props){
@@ -579,7 +436,7 @@ class SupplyItemUI extends Component{
                                 <div style={{paddingTop:50}}>           
                         
                                     <Typography component="h2" variant="headline" gutterBottom align="center">
-                                            {item.phone[0]}                                           
+                                            {item.phone}                                           
                                     </Typography>                    
                                     <Typography variant="subheading" gutterBottom align="center">
                                             {item.addr}
@@ -598,6 +455,7 @@ class SupplyItemUI extends Component{
         )
     }
 }
+
 
 
 const HistoryData = [
@@ -731,21 +589,17 @@ class SupplyItemView extends Component{
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <div className={classes.phones}>
-                                        {
-                                           data.phone.map(function(item, i){
-                                            return (
+                                   
                                                 <Chip
                                                 avatar={
                                                 <Avatar>
                                                     <PhoneIcon />
                                                 </Avatar>
                                                 }
-                                                    label={item}
+                                                    label={data.phone}
                                                     className={classes.chip}
                                                 />
-                                            )
-                                            })
-                                        }
+                                    
                                    
                                     </div>
                                 </Grid>
@@ -888,7 +742,13 @@ function TabContainer(props) {
     );
   }
 
+function mapStateToProps(state) {
+    return {
+        setting:state.setting,
+        auth0: state.auth0,
+        agent:state.agent,        
+    };
+} 
 
 
-
-export default connect(mapStateToProps, null)(withStyles(styles)(Supply))
+export default connect(mapStateToProps, null)(withStyles(styles)(SupplyContent))
