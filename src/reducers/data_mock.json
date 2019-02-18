@@ -1,0 +1,42 @@
+[
+    {
+      "id": 0,
+      "name": "Superman"
+    },
+    {
+      "id": 1,
+      "name": "Batman"
+    },
+    {
+      "id": 2,
+      "name": "Wonderwoman"
+    },
+    {
+      "id": 3,
+      "name": "Flash"
+    },
+    {
+      "id": 4,
+      "name": "Green Lantern"
+    },
+    {
+      "id": 5,
+      "name": "Aquaman"
+    },
+    {
+      "id": 6,
+      "name": "Cyborg"
+    },
+    {
+      "id": 7,
+      "name": "Green Arrow"
+    },
+    {
+      "id": 8,
+      "name": "Hawkman"
+    },
+    {
+      "id": 9,
+      "name": "Supergirl"
+    }
+  ]

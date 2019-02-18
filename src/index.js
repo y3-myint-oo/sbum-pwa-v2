@@ -4,9 +4,26 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// Redux Feature
+import rootReducer from './reducers';
+import { createStore, compose } from 'redux';
+import { Provider } from 'react-redux';
+import { offline } from '@redux-offline/redux-offline';
+import offlineConfig from '@redux-offline/redux-offline/lib/defaults';
+
+const store = createStore(
+    rootReducer,
+    compose(
+     // applyMiddleware(middleware),
+      offline(offlineConfig)
+    )
+);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>
+    , document.getElementById('root'));
+    
+serviceWorker.register();

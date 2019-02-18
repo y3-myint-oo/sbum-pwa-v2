@@ -1,0 +1,30 @@
+[
+    {
+      "id": 0,
+      "name": "Ye Myint Oo",
+      "userId":"ymo",
+      "pass":"1234",
+      "level":"admin"
+    },
+    {
+        "id": 1,
+        "name": "U Myint",
+        "userId":"myint",
+        "pass":"1234",
+        "level":"admin"
+    },
+    {
+        "id": 2,
+        "name": "Ma Myo Myo Khaing",
+        "userId":"myo",
+        "pass":"1234",
+        "level":"staff"
+    },
+    {
+        "id": 4,
+        "name": "Kaung Kaung",
+        "userId":"kaung",
+        "pass":"1234",
+        "level":"staff"
+    }
+]

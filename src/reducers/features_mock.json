@@ -1,0 +1,75 @@
+[
+    {
+      "id": 0,
+      "title": "DashBoard",
+      "description":"Describe about hero",
+      "icon":"/images/menu_icons/dashboard.svg",
+      "image":"",
+      "imageHDP":""
+    },
+    {
+        "id": 1,
+        "title": "Warehouse",
+        "description":"Store warehouse dont be lose",
+        "icon":"/images/menu_icons/warehouse.svg",
+        "image":"",
+        "imageHDP":""
+        
+    },
+    {
+        "id": 2,
+        "title": "Supplyer",
+        "description":"Supplyer is your power",
+        "icon":"/images/menu_icons/supplyer.svg",
+        "image":"",
+        "imageHDP":""
+    },
+    {
+        "id": 3,
+        "title": "Agent",
+        "description":"Make business with  Agent",
+        "icon":"/images/menu_icons/agent.svg",
+        "image":"",
+        "imageHDP":""
+    },
+    {
+        "id": 4,
+        "title": "Transport",
+        "description":"Buy a new car",
+        "icon":"/images/menu_icons/transport.svg",
+        "image":"",
+        "imageHDP":""
+    },
+    {
+        "id": 5,
+        "title": "Finacial",
+        "description":"Save Money :D",
+        "icon":"/images/menu_icons/finance.svg",
+        "image":"",
+        "imageHDP":""
+    },
+    {
+        "id": 6,
+        "title": "Employee",
+        "description":"Empower your employee",
+        "icon":"/images/menu_icons/employee.svg",
+        "image":"",
+        "imageHDP":""
+    },
+    {
+        "id": 7,
+        "title": "Unit",
+        "description":"Handle Your unit converter",
+        "icon":"/images/menu_icons/unit.svg",
+        "image":"",
+        "imageHDP":""
+    },
+    {
+        "id": 8,
+        "title": "Setting",
+        "description":"Change what you want",
+        "icon":"/images/menu_icons/settings.svg",
+        "image":"",
+        "imageHDP":""
+    }
+]
