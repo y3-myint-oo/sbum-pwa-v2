@@ -63,6 +63,7 @@ class App extends Component {
     
   }
   render() {
+    console.log(" auth0 ( app.js ) ",this.props.auth0.user)
     if (this.props.auth0.user === null ){
       return (
       <MuiThemeProvider theme={theme}>

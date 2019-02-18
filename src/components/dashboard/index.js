@@ -62,7 +62,7 @@ class DashBoard extends Component{
                 />
                 <AppBar position="sticky" color="default">
                         <Toolbar className={classes.toolBar}>
-                        <IconButton className={classes.menu}>
+                        <IconButton className={classes.menu} onClick={e=>this.props.navStatus(!this.props.setting.navIsOpen)}>
                             <MenuIcon fontSize="large" />
                         </IconButton>
                         <Typography variant="h6" color="primary">

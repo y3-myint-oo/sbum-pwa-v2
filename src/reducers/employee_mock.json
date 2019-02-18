@@ -1,0 +1,27 @@
+[
+    {
+      "id": 0,
+      "name": "Hello World",
+      "nrc":"9/18424",
+      "phone":"91848",
+      "role":"manager",
+      "address":"Sa Kahing"
+
+    },
+    {
+      "id": 1,
+      "name": "Batman",
+      "nrc":"9/18424",
+      "phone":"91848",
+      "role":"manager",
+      "address":"Sa Kahing"
+    },
+    {
+      "id": 2,
+      "name": "Wonderwoman",
+      "nrc":"9/18424",
+      "phone":"91848",
+      "role":"manager",
+      "address":"Sa Kahing"
+    }
+]

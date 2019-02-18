@@ -5,7 +5,14 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+
+import MenuIcon from '@material-ui/icons/ViewHeadline';
+import IconButton from '@material-ui/core/IconButton';
+import { navStatus } from '../../actions/setting_action';
+import NetworkStatus from '../util/network';
 import ContentUX from './content';
+
+
 
 const styles = theme => ({
     root: {
@@ -19,7 +26,7 @@ const styles = theme => ({
     },
 });
 
-class Agent extends Component{
+class DashBoard extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -27,9 +34,13 @@ class Agent extends Component{
             snackMessage:"",
         }    
         this.handleCloseSnack=this.handleCloseSnack.bind(this)
+        this.handleNav=this.handleNav.bind(this)
     }   
     handleCloseSnack(){
         this.setState({snackBarOpen:false})
+    }
+    handleNav(){
+        console.log("-----> nav handle")
     }
     componentDidMount () {
         
@@ -49,12 +60,15 @@ class Agent extends Component{
                 />
                 <AppBar position="sticky" color="default">
                         <Toolbar className={classes.toolBar}>
+                        <IconButton className={classes.menu} onClick={e=>this.props.navStatus(!this.props.setting.navIsOpen)}>
+                            <MenuIcon fontSize="large" />
+                        </IconButton>
                         <Typography variant="h6" color="primary">
-                        Agent
+                            Agent
                         </Typography>
                         <div className={classes.grow} />
                         <div className={classes.search}>
-                            
+                            <NetworkStatus />
                         </div>    
                         </Toolbar>
                 </AppBar>
@@ -72,4 +86,4 @@ function mapStateToProps(state) {
     };
 } 
 
-export default connect(mapStateToProps,null)(withStyles(styles)(Agent));
+export default connect(mapStateToProps,{navStatus})(withStyles(styles)(DashBoard));

@@ -5,13 +5,13 @@ import { readFeatures } from '../../actions/features_action';
 import { requestPage } from '../../actions/setting_action';
 import { withStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ContentUx from './content';
 import { Divider } from '@material-ui/core';
+import {navStatus} from '../../actions/setting_action'
 
 const styles = {
     menu: {
@@ -39,37 +39,25 @@ class Home extends Component {
     constructor(props){
         super(props)
         this.state={
-            navIsOpen:false, //left: false,
+            
         };
-        this.toggleDrawer=this.toggleDrawer.bind(this);
-    }
-    toggleDrawer(){
-        this.setState({
-            navIsOpen: !this.state.navIsOpen,
-        });
     }
     render() {
         const { classes } = this.props;
         return(
             <div>
-                <Button 
-                variant="fab"
-                color="primary" 
-                className={classes.menu}
-                onClick={e=>this.toggleDrawer()}
-                >
-                Menu</Button>
+                
                 <SwipeableDrawer
                     anchor="left"
-                    open={this.state.navIsOpen}
-                    onClose={e=>this.toggleDrawer()}
-                    onOpen={e=>this.toggleDrawer()}
+                    open={this.props.setting.navIsOpen}
+                    onClose={e=>this.props.navStatus(!this.props.setting.navIsOpen)}
+                    onOpen={e=>this.props.navStatus(!this.props.setting.navIsOpen)}
                     >
                     <div
                         tabIndex={0}
                         role="button"
-                        onClick={e=>this.toggleDrawer()}
-                        onKeyDown={e=>this.toggleDrawer()}
+                        onClick={e=>this.props.navStatus(!this.props.setting.navIsOpen)}
+                        onKeyDown={e=>this.props.navStatus(!this.props.setting.navIsOpen)}
                     >
                        <div className={classes.list}>
                        {
@@ -112,5 +100,5 @@ function mapStateToProps(state) {
         features:state.features,
     };
 } 
-export default connect(mapStateToProps, { logout,readFeatures,requestPage })(withStyles(styles)(Home));
+export default connect(mapStateToProps, { logout,readFeatures,requestPage,navStatus })(withStyles(styles)(Home));
   

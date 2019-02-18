@@ -57,13 +57,6 @@ class DashContent extends Component{
                                         <EmployeeInfoUX />                                       
                                 </Paper>
                                 </Grid>
-                                <Grid item md={12} sm={12} xs={12}>
-                                <Paper className={classes.storeBox}>
-                                        <Typography variant="subtitle1" gutterBottom align="center" color="primary">
-                                        today-total-income and outcome compare
-                                        </Typography>                                        
-                                </Paper>
-                                </Grid>
                             </Grid>
                     </Grid>
                     <Grid item md={7} sm={12} xs={12}>
@@ -76,13 +69,7 @@ class DashContent extends Component{
                                     <StocKInfoUX />                             
                                 </Paper>
                             </Grid>
-                            <Grid item md={12} sm={12} xs={12}>
-                                <Paper className={classes.storeBox}>
-                                    <Typography variant="subtitle1" gutterBottom align="center" color="primary">
-                                        Apending order
-                                    </Typography>                              
-                                </Paper>
-                            </Grid>
+                           
                             </Grid>
                     </Grid>
                     

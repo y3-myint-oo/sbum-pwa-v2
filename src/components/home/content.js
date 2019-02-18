@@ -25,7 +25,7 @@ class Content extends Component{
     }
     render() {
         console.log('[Content] this.props', this.props.setting.requestedPage);
-        if (this.props.setting.requestedPage === "DashBoard"){
+        if (this.props.setting.requestedPage === "DashBoard" || this.props.setting.requestedPage === ""){
             return (
             <DashBoardUx />
             ); 

@@ -63,13 +63,5 @@
         "icon":"/images/menu_icons/unit.svg",
         "image":"",
         "imageHDP":""
-    },
-    {
-        "id": 8,
-        "title": "Setting",
-        "description":"Change what you want",
-        "icon":"/images/menu_icons/settings.svg",
-        "image":"",
-        "imageHDP":""
     }
 ]

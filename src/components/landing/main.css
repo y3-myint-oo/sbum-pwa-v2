@@ -1,0 +1,174 @@
+.welcome {
+    display: flex;
+    justify-content: center;
+    background-color: #78002e;
+  }
+  .welcome .login{
+    display: flex;
+    position: absolute;
+      top: 30%;
+    width: auto;	
+    border-radius: 5px;
+    flex-direction: row;
+  }
+  
+  .welcome .login .menu{
+    margin: 0;
+    right: auto;
+    position: relative;
+    width: 100px;
+    height: 265px;
+    background-color: #d3ebd3;
+    border-left-style: solid;
+    border-color: #357a38;
+  }
+  
+  .welcome .login .content{
+    margin: 0;
+    right: auto;
+    top:-80px;
+    position: relative;
+    width: 300px;
+    height: 400px;
+    
+  }
+  .welcome .login .content .slider{
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    width: 100%;
+    height: 100%;
+  }
+  
+  
+  .welcome .login .content .slider {
+    max-width: 300px;
+    height: 400px;
+    margin: 10px auto;
+    position: relative;
+  }
+  .welcome .login .content .slide1,.slide2,.slide3,.slide4,.slide5 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  .welcome .login .content .slide1 {
+    background: url(/images/slide_icons/back.jpg)no-repeat center;
+        background-size: cover;
+      animation:fade 8s infinite;
+  -webkit-animation:fade 8s infinite;
+  
+  } 
+  .welcome .login .content .slide2 {
+    background: url(/images/slide_icons/back2.jpg)no-repeat center;
+        background-size: cover;
+      animation:fade2 8s infinite;
+  -webkit-animation:fade2 8s infinite;
+  }
+  .welcome .login .content .slide3 {
+      background: url(/images/slide_icons/back3.jpg)no-repeat center;
+        background-size: cover;
+      animation:fade3 8s infinite;
+  -webkit-animation:fade3 8s infinite;
+  }
+  @keyframes fade
+  {
+    0%   {opacity:1}
+    33.333% { opacity: 0}
+    66.666% { opacity: 0}
+    100% { opacity: 1}
+  }
+  @keyframes fade2
+  {
+    0%   {opacity:0}
+    33.333% { opacity: 1}
+    66.666% { opacity: 0 }
+    100% { opacity: 0}
+  }
+  @keyframes fade3
+  {
+    0%   {opacity:0}
+    33.333% { opacity: 0}
+    66.666% { opacity: 1}
+    100% { opacity: 0}
+  }
+  
+  .welcome .login .frame{
+    margin: 0;
+    right: auto;
+    position: relative;
+    width: 300px;
+    height: 265px;
+    border-right-style: solid;
+    background-color: #d3ebd3;
+    border-color: #357a38;
+    padding: 10px;
+    color: #357a38;
+  }  
+  .welcome .login .content:hover{
+    border-top-style:solid;
+    border-color: #357a38;
+    
+  }
+  
+  .welcome .login .content .header{
+    color: #fff;
+    opacity: 0;
+    text-align: center;
+    -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: 300px;
+    transition: transform 0.4s, opacity 0.1s;
+  }
+  
+  .welcome .login .content:hover .header{
+    color: #357a38;
+    opacity: 1;
+    text-align: center;
+    -webkit-transform: translateY(-130%);
+      -moz-transform: translateY(-130%);
+      -ms-transform: translateY(-130%);
+    transform: translateY(-130%) scale(1.5)  
+  }
+  
+  .welcome .login .content .label{
+    color: #357a38;
+    text-align: center;
+    opacity: 0;
+    margin-top: -90%;
+    transition: transform 0.4s, opacity 0.5s;
+  
+  }
+  
+  .welcome .login .content:hover .label{
+    opacity: 1;
+    -webkit-transform: translateY(-100%);
+      -moz-transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    transform: translateY(-100%);  
+  }
+  
+  @media only screen and (max-width: 700px) {
+    .welcome {
+        background-color: lightblue;
+    }
+    .welcome .content{
+      display:none;
+    }
+  }
+  
+  .sidenav---sidenav---_2tBP{
+    background: #357a38 !important;
+  }
+  
+  @media print {
+    header, footer, aside, form, … {
+        display: none;
+    }
+    * {
+      color: green;    
+      background-color: #fff;
+    }
+  }

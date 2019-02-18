@@ -255,42 +255,22 @@ class Supply extends Component{
     render(){
         const { classes , menuToggle } = this.props;
         const { isLoading } = this.state;  
-        if (menuToggle){
-            return(
-                <div className={classes.Offroot}>                   
-                    {!this.state.isLoading ? (
-                         <SupplyContent classes={classes} supplies={this.state.supplies} units={this.state.units}/>
-                    ):(
-                        <div className={classes.sweetLoading}>
-                                <BeatLoader
-                                sizeUnit={"px"}
-                                size={20}
-                                color={'#357a38'}
-                                loading={this.state.isLoading}
-                                />
-                        </div> 
-                    )}                  
-                </div>
-            )
-        }else{
-            return(
-                <div className={classes.Onroot}>
-                    {!this.state.isLoading ? (
-                         <SupplyContent classes={classes} supplies={this.state.supplies} units={this.state.units}/>
-                    ):(
-                        <div className={classes.sweetLoading}>
-                                <BeatLoader
-                               // className={override}
-                                sizeUnit={"px"}
-                                size={20}
-                                color={'#357a38'}
-                                loading={this.state.isLoading}
-                                />
-                        </div> 
-                    )}
-                </div>
-            )
-        }
+        return(
+            <div className={classes.Offroot}>                   
+                {!this.state.isLoading ? (
+                     <SupplyContent classes={classes} supplies={this.state.supplies} units={this.state.units}/>
+                ):(
+                    <div className={classes.sweetLoading}>
+                            <BeatLoader
+                            sizeUnit={"px"}
+                            size={20}
+                            color={'#357a38'}
+                            loading={this.state.isLoading}
+                            />
+                    </div> 
+                )}                  
+            </div>
+        )
     }
 }
 
