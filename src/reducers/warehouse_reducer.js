@@ -13,6 +13,8 @@ function warehouse(state = warehouse_mock, action) {
         return state;  
       case UPDATE_WAREHOUSE:
         return state; 
+      case READ_WAREHOUSE:
+        return state;
       default: 
         return state;
     }

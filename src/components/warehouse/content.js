@@ -37,6 +37,7 @@ import MMNumber from '../util/mmnumber';
 
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
+import { readWarehouse} from '../../actions/warehouse_action';
 
 const styles = theme => ({   
      Onroot:{
@@ -184,21 +185,12 @@ const styles = theme => ({
     }
 });
 
-class Warehouse extends Component{
-    render(){
-        console.log( )
-        const { classes  } = this.props;
-        return(
-            <WarehouseContent classes={classes} />
-        )
-    }
-}
 
 function mapStateToProps(state) {
     return {
         setting:state.setting,
         auth0: state.auth0,
-        features:state.features,
+        warehouse:state.warehouse,
     };
 } 
 
@@ -223,12 +215,24 @@ class WarehouseContent extends Component{
         this.handleDeleteDialog=this.handleDeleteDialog.bind(this)
         this.handleSnack=this.handleSnack.bind(this)
         this.fetchDatas=this.fetchDatas.bind(this)
+        this.fetchNetwork=this.fetchNetwork.bind(this)
         this.closeSnack=this.closeSnack.bind(this)
         this.handleDeleteDialogAndSave=this.handleDeleteDialogAndSave.bind(this)
         this.deleteStock=this.deleteStock.bind(this)
     }     
     componentDidMount(){
-        this.fetchDatas()
+        this.fetchNetwork()
+    }
+    fetchNetwork(){
+        if (this.props.setting.isOnline){
+            this.fetchDatas()
+        }else{
+            //From Redux
+            this.setState({warehouseItems:this.props.warehouse})
+            this.setState({selectedItem:this.props.warehouse[0]})
+            console.log(" Redux offline data from cache [warehouse] - ",this.props.warehouse)
+            this.setState({isLoading:false})
+        }
     }
     fetchDatas(){
         axios.all([
@@ -612,8 +616,6 @@ class WarehouseItemView extends Component{
         super(props);
         this.state={
             selectedView:0,  //buy price history, sell price history , with year filter
-           // totalPirce:this.props.data.totalPrice,
-           // historyDate:this.props.data.price,
         }        
         this.handleChange=this.handleChange.bind(this)
         this.fetchDatas=this.fetchDatas.bind(this)
@@ -688,11 +690,11 @@ class WarehouseItemView extends Component{
                                 <spam className={classes.spacing} /> 
                                 <Typography variant="title" align="left">
                                 {
-                                    (typeof data.price[data.price.length-1] !== 'undefined') && (
+                                    (typeof data.price !== 'undefined') && (typeof data.price[data.price.length-1] !== 'undefined') && (
                                         <div>
                                              {data.price[data.price.length-1].sprice}   ကျပ်
                                         </div>
-                                    )
+                                    )                                   
                                 }
                               
                                 </Typography>
@@ -704,7 +706,7 @@ class WarehouseItemView extends Component{
                                 <spam className={classes.spacing} />
                                 <Typography variant="title" align="left">
                                 {
-                                    (typeof data.price[data.price.length-1] !== 'undefined') && (
+                                    (typeof data.price !== 'undefined') && (typeof data.price[data.price.length-1] !== 'undefined') && (
                                         <div>
                                              {data.price[data.price.length-1].bprice}  ကျပ်
                                         </div>
@@ -801,4 +803,4 @@ function TabContainer(props) {
 
 
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Warehouse))
+export default connect(mapStateToProps, { readWarehouse})(withStyles(styles)(WarehouseContent))

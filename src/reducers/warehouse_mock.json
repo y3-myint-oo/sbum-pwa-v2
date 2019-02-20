@@ -1,42 +1,47 @@
 [
     {
       "id": 0,
-      "name": "Superman"
+      "serial":"4856264820",
+      "title":"Pal",
+      "unit":"paung",
+      "price":[
+        {
+        "date":"24 MAY 2018",  
+        "sprice":"1371",
+        "bprice":"3414"
+        }        
+      ],
+      "network":"pending", 
+      "totalPrice":"384738"
     },
     {
       "id": 1,
-      "name": "Batman"
+      "serial":"72626462534",
+      "title":"banana",
+      "unit":"pyi",
+      "price":[
+        {
+        "date":"26 MAY 2019",  
+        "sprice":"300",
+        "bprice":"150"
+        }        
+      ],
+      "network":"pending", 
+      "totalPrice":"1280"
     },
     {
       "id": 2,
-      "name": "Wonderwoman"
-    },
-    {
-      "id": 3,
-      "name": "Flash"
-    },
-    {
-      "id": 4,
-      "name": "Green Lantern"
-    },
-    {
-      "id": 5,
-      "name": "Aquaman"
-    },
-    {
-      "id": 6,
-      "name": "Cyborg"
-    },
-    {
-      "id": 7,
-      "name": "Green Arrow"
-    },
-    {
-      "id": 8,
-      "name": "Hawkman"
-    },
-    {
-      "id": 9,
-      "name": "Supergirl"
-    }
-  ]
+      "serial":"72626462534",
+      "title":"water",
+      "unit":"garlan",
+      "price":[
+        {
+        "date":"1 MAY 2019",  
+        "sprice":"500",
+        "bprice":"300"
+        }        
+      ],
+      "network":"pending", 
+      "totalPrice":"1280"
+    }    
+]

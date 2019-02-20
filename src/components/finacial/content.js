@@ -105,7 +105,8 @@ class FinancialContent extends Component{
         const { classes } = this.props;
         return(
             <div>                    
-                <Grid container className={classes.display}>
+                <Grid container className={classes.display}
+                spacing={32}>
                     <Grid item xs={12} ms={3} md={2}>
                         <Grid container spacing={8}
                         align="center"
@@ -763,7 +764,7 @@ class CalendarDay extends Component {
         const dateFormatHeader = "D MMMM YYYY";
         return (
             <Grid container>
-                <Grid item md={4} align="center">
+                <Grid item md={4} xs={6} ms={6} align="center">
                     <IconButton>
                         <TopIcon fontSize="large" onClick={this.prevMonth}/>
                     </IconButton> 
@@ -805,7 +806,7 @@ class CalendarDay extends Component {
                         <DownIcon fontSize="large" onClick={this.nextMonth}/>
                     </IconButton> 
                 </Grid>
-                <Grid item md={8}>
+                <Grid item md={8} xs={6} ms={6}>
                     <Typography variant="title" align="center">
                         စာရင်းမှတ်တမ်း
                     </Typography>
