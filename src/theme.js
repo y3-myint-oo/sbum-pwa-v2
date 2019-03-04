@@ -8,6 +8,10 @@ export default createMuiTheme({
       secondary: {
         main: '#f44336',
       },
-    }
+    },
+    typography: {
+      // Use the system font
+      fontFamily: 'NotoSansZawgyi'
+    },
 });
 

@@ -5,6 +5,7 @@ import { ADD_SUPPLYER, DELETE_SUPPLYER,UPDATE_SUPPLYER,READ_SUPPLYER } from '../
 function supplyer(state = supplyer_mock, action) {
     switch(action.type) {
       case ADD_SUPPLYER:
+            console.log(" adding new supplyer [Supplyer-redux] ", action.data)     
             state = state.concat([action.data]); //Query logic may vary
         return state;
       case DELETE_SUPPLYER:

@@ -5,7 +5,8 @@ import { ADD_WAREHOUSE, DELETE_WAREHOUSE,UPDATE_WAREHOUSE ,READ_WAREHOUSE} from 
 
 function warehouse(state = warehouse_mock, action) {
     switch(action.type) {
-      case ADD_WAREHOUSE:            
+      case ADD_WAREHOUSE:  
+            console.log(" adding new stock [warehouse] ", action.data)          
             state = state.concat([action.data]); //Query logic may vary
         return state;
       case DELETE_WAREHOUSE:

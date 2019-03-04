@@ -1,42 +1,18 @@
 [
     {
       "id": 0,
-      "name": "Superman"
+      "name":"U Myint",
+      "address":"Shwe Box, Near Palace",
+      "phone":"0917614",
+      "division":"Saging",
+      "note":"Humsan"
     },
     {
       "id": 1,
-      "name": "Batman"
-    },
-    {
-      "id": 2,
-      "name": "Wonderwoman"
-    },
-    {
-      "id": 3,
-      "name": "Flash"
-    },
-    {
-      "id": 4,
-      "name": "Green Lantern"
-    },
-    {
-      "id": 5,
-      "name": "Aquaman"
-    },
-    {
-      "id": 6,
-      "name": "Cyborg"
-    },
-    {
-      "id": 7,
-      "name": "Green Arrow"
-    },
-    {
-      "id": 8,
-      "name": "Hawkman"
-    },
-    {
-      "id": 9,
-      "name": "Supergirl"
+      "name":"U Kayw",
+      "address":"Mandalay 79,28 street",
+      "phone":"917461963",
+      "division":"Mandalay",
+      "note":""
     }
-  ]
+]

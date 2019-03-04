@@ -121,7 +121,7 @@ class FinancialContent extends Component{
                                             <InIcon color='primary' fontSize='large'/>                                            
                                         </div>                                        
                                         <Typography variant="h5" color="primary" gutterBottom>
-                                                ၀င်ငွေ
+                                        ၀င္ေငြ
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>    
@@ -135,7 +135,7 @@ class FinancialContent extends Component{
                                             <OutIcon color='primary' fontSize='large'/>                                            
                                         </div>                                        
                                         <Typography variant="h5" color="primary" gutterBottom>
-                                                ထွက်ငွေ
+                                        ထြက္ေငြ
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>    
@@ -149,7 +149,7 @@ class FinancialContent extends Component{
                                             <BSIcon color='primary' fontSize='large'/>                                            
                                         </div>                                        
                                         <Typography variant="h5" color="primary" gutterBottom>
-                                                စာရင်း
+                                        စာရင္း
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>    

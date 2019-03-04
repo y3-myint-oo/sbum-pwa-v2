@@ -29,6 +29,8 @@ import Timeline from 'react-time-line';
 import { BeatLoader } from 'react-spinners';
 import axios from 'axios';
 
+import { addSupplyer} from '../../actions/supplyer_action';
+
 const styles = theme => ({
    
      Onroot:{
@@ -203,117 +205,39 @@ const styles = theme => ({
     }
 });
 
-class Supply extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            supplies:null,
-            units:null,
-            isLoading:true,
-        }        
-        this.fetchSuppliesAndUnits=this.fetchSuppliesAndUnits.bind(this)   
-    } 
-    componentDidMount() {
-        this.fetchSuppliesAndUnits();
-    }
-    fetchSuppliesAndUnits(){
-        axios.all([
-            axios.get('http://localhost:8081/api/v1/supply',{
-                headers: {
-                    'content-type': 'application/json',
-                },
-            }),
-            axios.get('http://localhost:8081/api/v1/unit',{
-                headers: {
-                    'content-type': 'application/json',
-                },
-            })
-        ]).then(axios.spread((suppRes, unitRes) => {
-            this.setState({supplies:suppRes.data.data})
-            this.setState({units:unitRes.data.data})
-            console.log( " fetch Supplies ---- ", this.state.supplies)
-            console.log( " fetch Units ---- ", this.state.units)
-            this.setState({isLoading:false})
-        }));
-    }
 
-    handleBack(){
-        if ( this.state.selectedIndex == 0 ){
-            this.setState({selectedIndex:this.state.units.length-1})
-        }else{
-            this.setState({selectedIndex:this.state.selectedIndex-1})
-        }
-    }
-    handleForward(){
-        if ( this.state.selectedIndex == this.state.units.length-1 ){
-            this.setState({selectedIndex:0})
-        }else{
-            this.setState({selectedIndex:this.state.selectedIndex+1})
-        }
-    } 
-   
-    render(){
-        const { classes , menuToggle } = this.props;
-        const { isLoading } = this.state;  
-        return(
-            <div className={classes.Offroot}>                   
-                {!this.state.isLoading ? (
-                     <SupplyContent classes={classes} supplies={this.state.supplies} units={this.state.units}/>
-                ):(
-                    <div className={classes.sweetLoading}>
-                            <BeatLoader
-                            sizeUnit={"px"}
-                            size={20}
-                            color={'#357a38'}
-                            loading={this.state.isLoading}
-                            />
-                    </div> 
-                )}                  
-            </div>
-        )
-    }
-}
-
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
     return {
-        menuToggle : state.MenuToggle
+        setting:state.setting,
+        auth0: state.auth0,
+        supplyer:state.supplyer,
     };
-}
+} 
 
-/*8const SupplyItems = [
-    {id:"1",code:"co001",name:"ဦးမြ",description:"ရွှေဘို တောင်သူ",phone:"092053182",addr:"အမှတ် (၂) အိပ်အမှတ် ၇ , မင်းတုန်းလမ်း",township:"ရွှေဘို",division:"မန္တလေးမြို့"},
-    {id:"2",code:"b002",name:"ဦးဘ",description:"",phone:"09205212",addr:"",township:"ရွှေဘို",division:"မန္တလေးမြို့"},
-    {id:"3",code:"co002",name:"ဦးချစ်မောင်",description:"",phone:"09952141233",addr:"ပုဇွန်တောင်အထက်လမ်း တိုက် (၂) ၄ လွှာ",township:"ပုဇွန်တောင်",division:"ရန်ကုန်"},
-    {id:"4",code:"co390",name:"ဦးအောင်ကို",description:"",phone:"099543847372",addr:"",township:"",division:""},
-    {id:"1",code:"co199",name:"ဒေါ်ခင်အေး",description:"",phone:"09972226432",addr:"လမ်း ၅၀ အလယ်ဘလောက် တိုက် ၂၁",township:"ကျောက်တံတား",division:"ရန်ကုန်"},
-    {id:"2",code:"co453",name:"ဦးလှမောင်",description:"",phone:"092053182",addr:"ပုဇွန်တောင်အထက်လမ်း",township:"",division:""},
-    {id:"3",code:"co212",name:"ခင်နု",description:"",phone:"092053182",addr:"",township:"",division:""},
-    {id:"4",code:"co138",name:"မမြကြည်",description:"",phone:"09259116768",addr:"",township:"",division:""},
-]*/
 
 const divisions=[
-    {name:"မန္တလေးတိုင်းဒေသကြီး"},
-    {name:"ရန်ကုန်တိုင်းဒေသကြီး"},
-    {name:"မကွေးတိုင်းဒေသကြီး"},
-    {name:"နေပြည်တော်တိုင်းဒေသကြီး"},
-    {name:"ပဲခူးတိုင်းဒေသကြီး"},
-    {name:"ရှမ်းပြည်နယ်"},
-    {name:"စကိုင်းတိုင်းဒေသကြီး"},
-    {name:"ဧရာ၀တီတိုင်းဒေသကြီး"},
-    {name:"မွန်ပြည်နယ်"},
-    {name:"ကချင်ပြည်နယ်"},
-    {name:"တနလ်ာရီတိုင်းဒေသကြီး"},
-    {name:"ချင်းပြည်နယ်"},
-    {name:"ရခိုင်ပြည်နယ်"},
-    {name:"ကရင်ပြည်နယ်"},
+    {name:"မႏၲေလးတိုင္းေဒသႀကီး"},
+    {name:"ရန္ကုန္တိုင္းေဒသႀကီး"},
+    {name:"မေကြးတိုင္းေဒသႀကီး"},
+    {name:"ေနျပည္ေတာ္တိုင္းေဒသႀကီး"},
+    {name:"ပဲခူးတိုင္းေဒသႀကီး"},
+    {name:"ရွမ္းျပည္နယ္"},
+    {name:"စကိုင္းတိုင္းေဒသႀကီး"},
+    {name:"ဧရာ၀တီတိုင္းေဒသႀကီး"},
+    {name:"မြန္ျပည္နယ္"},
+    {name:"ကခ်င္ျပည္နယ္"},
+    {name:"တနလ္ာရီတိုင္းေဒသႀကီး"},
+    {name:"ခ်င္းျပည္နယ္"},
+    {name:"ရခိုင္ျပည္နယ္"},
+    {name:"ကရင္ျပည္နယ္"},
 ]
 
 class SupplyContent extends Component{
     constructor(props){
         super(props);
         this.state={
-            supplies:this.props.supplies,
-            units:this.props.units,
+            supplies:[],
+            isLoading:true,
             selectedItem:null,  
             selectedView:0, 
             dialogOpen:false,
@@ -324,7 +248,35 @@ class SupplyContent extends Component{
         this.handleSnack=this.handleSnack.bind(this)
         this.refresh=this.refresh.bind(this)
         this.handleChildSnack=this.handleChildSnack.bind(this)
+        this.fetchDatas=this.fetchDatas.bind(this)   
+        this.fetchNetwork=this.fetchNetwork.bind(this)
     } 
+
+    componentDidMount(){
+        this.fetchNetwork()
+    }
+    fetchNetwork(){
+        if (this.props.setting.isOnline){
+            this.fetchDatas()
+        }else{
+            //From Redux
+            console.log(" Redux offline data from cache [supplyer] - ",this.props.supplyer)
+            this.setState({supplies:this.props.supplyer})
+            this.setState({isLoading:false})
+        }
+    }
+    fetchDatas(){
+        axios.all([
+            axios.get('http://localhost:8081/api/v1/supply',{
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+        ]).then(axios.spread((suppRes) => {
+            this.setState({supplies:suppRes.data.data})
+            this.setState({isLoading:false})
+        }));
+    }
     handleSelectedItem(data){
         console.log(data)
         this.setState({selectedItem:data})
@@ -345,85 +297,101 @@ class SupplyContent extends Component{
         const { classes } = this.props;
         const { isLoading,units, error } = this.state;   
         return(
-            <div className={classes.root}>
-            <div className={classes.content}>
-                    <Grid container spacing={24}>
-                        <Grid item xs={12} sm={12} md={4}>
-                            <div>
-                                <Grid container>
-                                    <Grid item  sm={12}>
-                                            
-                                    </Grid>
-                                </Grid>  
-                            </div>    
-                            
-                            <div className={classes.menuButton}>
-                            <Button variant="extendedFab" aria-label="addNewItem" fullWidth className={classes.addButton}
-                            onClick={this.handleDialog}
-                            >             
-                                <AddIcon />
-                                တောင်သူ အသစ်ထည့်မည်
-                            </Button>   
-                            </div>
-                            <Paper className={classes.paper} style={{marginTop:-20}}>
-                                <GridList cellHeight={200} spacing={25} cols={1} className={classes.gridList}>
-                                    {
-                                        this.state.supplies !=null && (
-                                            <div>
-                                                {this.state.supplies.map(item => (
-                                                    <SupplyItemUI item={item} classes={classes} handleItem={this.handleSelectedItem}
-                                                    handleParentSnack={this.handleChildSnack}
-                                                   // snackMessage={this.state.snackMessage}                                                    
-                                                    />
-                                                ))}
-                                            </div>
-                                        )
-                                    }
+            <div>
+                {!this.state.isLoading ? (
+                    <div className={classes.root}>
+                    <div className={classes.content}>
+                            <Grid container spacing={24}>
+                                <Grid item xs={12} sm={12} md={4}>
+                                    <div>
+                                        <Grid container>
+                                            <Grid item  sm={12}>
+                                                    
+                                            </Grid>
+                                        </Grid>  
+                                    </div>    
                                     
-                                </GridList>    
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={8}>
-                            {
-                                this.state.selectedItem !=null &&(
-                                    <SupplyItemView data={this.state.selectedItem} classes={classes}/>
-                                )
-                            }   
-                          
-                        </Grid>
-                    </Grid>  
-    
-                    <Modal
-                        open={this.state.dialogOpen}
-                        onClose={this.handleDialog}
-                        >
-                        <div style={getModalStyle()} className={classes.dialog}>
-                            <NewItemDialog  classes={classes} close={this.handleDialog} snackMsg={this.handleSnack} units={units}/> 
-                        </div>
-                    </Modal>   
-                    <Snackbar                    
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        open={this.state.snackOpen}
-                        onClose={this.handleSnack}
-                        ContentProps={{
-                            'aria-describedby': 'message-id',
-                        }}
-                        message={
-                            <span id="message-id"                        
-                            >{this.state.snackMessage}</span>
-                        }
-                        action={[
-                            <Button key="undo" color="secondary" size="small" onClick={this.refresh}>
-                            REFRESH
-                            </Button>              
-                        ]}
-                    />       
-                </div>       
-        
-        </div>   
+                                    <div className={classes.menuButton}>
+                                    <Button variant="extendedFab" aria-label="addNewItem" fullWidth className={classes.addButton}
+                                    onClick={this.handleDialog}
+                                    >             
+                                        <AddIcon />
+                                        ေတာင္သူ အသစ္ထည့္မည္
+                                    </Button>   
+                                    </div>
+                                    <Paper className={classes.paper} style={{marginTop:-20}}>
+                                        <GridList cellHeight={200} spacing={25} cols={1} className={classes.gridList}>
+                                            {
+                                                this.state.supplies !=null && (
+                                                    <div>
+                                                        {this.state.supplies.map(item => (
+                                                            <SupplyItemUI item={item} classes={classes} handleItem={this.handleSelectedItem}
+                                                            handleParentSnack={this.handleChildSnack}
+                                                           // snackMessage={this.state.snackMessage}                                                    
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                )
+                                            }
+                                            
+                                        </GridList>    
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={8}>
+                                    {
+                                        this.state.selectedItem !=null &&(
+                                            <SupplyItemView data={this.state.selectedItem} classes={classes}/>
+                                        )
+                                    }   
+                                  
+                                </Grid>
+                            </Grid>  
+            
+                            <Modal
+                                open={this.state.dialogOpen}
+                                onClose={this.handleDialog}
+                                >
+                                <div style={getModalStyle()} className={classes.dialog}>
+                                    <NewItemDialog  classes={classes} close={this.handleDialog} snackMsg={this.handleSnack}
+                                    action={this.props}
+                                    /> 
+                                </div>
+                            </Modal>   
+                            <Snackbar                    
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                open={this.state.snackOpen}
+                                onClose={this.handleSnack}
+                                ContentProps={{
+                                    'aria-describedby': 'message-id',
+                                }}
+                                message={
+                                    <span id="message-id"                        
+                                    >{this.state.snackMessage}</span>
+                                }
+                                action={[
+                                    <Button key="undo" color="secondary" size="small" onClick={this.refresh}>
+                                    REFRESH
+                                    </Button>              
+                                ]}
+                            />       
+                        </div>       
+                
+                </div> 
+                ):(
+                    <div className={classes.sweetLoading}>
+                            <BeatLoader
+                            sizeUnit={"px"}
+                            size={20}
+                            color={'#357a38'}
+                            loading={this.state.isLoading}
+                            />
+                    </div> 
+                )} 
+            </div>
+              
         )
     }
 
@@ -473,22 +441,34 @@ class NewItemDialog extends Component{
         this.setState({ [event.target.name]: event.target.value });
     }
     handleConfirm(){
-        //Fetch API
-        const params = {
+         //Fetch API
+         const params = {
             name:this.state.name,
             address:this.state.address,
             phone:this.state.phone,
             division:this.state.division,
             note:this.state.note,
+            network:""
         };
-        axios.post('http://localhost:8081/api/v1/add/supply',params,{
+        if (this.props.action.setting.isOnline){
+            params.network="synced"            
+            //Redux & API
+            this.props.action.addSupplyer(params)
+            axios.post('http://localhost:8081/api/v1/add/supply',params,{
             headers: {
                 'content-type': 'application/json',
             },
-        }).then(res => {
-            this.setState({snackMessage:res.data.message})
+            }).then(res => {
+                this.setState({snackMessage:res.data.message})
+                this.setState({snackOpen:!this.state.snackOpen})
+            }) 
+        }else{
+            params.network="pending"  
+            //Redux only
+            this.props.action.addSupplyer(params)
+            this.setState({snackMessage:"offline cache storage"})
             this.setState({snackOpen:!this.state.snackOpen})
-        }) 
+        }       
     }
     render(){
         const { classes } = this.props;
@@ -497,7 +477,7 @@ class NewItemDialog extends Component{
                 <AppBar position='fixed'>
                         <Toolbar>                       
                         <Typography variant="h6" color="inherit" className={classes.flex}>
-                            တောင်သူ အသစ်ထည့်မည်
+                                         ေတာင္သူ အသစ္ထည့္မည္
                         </Typography>
                         <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
                             <CloseIcon />
@@ -508,7 +488,7 @@ class NewItemDialog extends Component{
                 <Grid container spacing={8}>
                     <Grid item xs={12} >
                                 <Typography variant="caption"  align="left">
-                                    အမည်
+                                အမည္
                                 </Typography> 
                                 <TextField
                                 name="name"
@@ -520,7 +500,7 @@ class NewItemDialog extends Component{
                     </Grid>
                     <Grid item xs={6} >
                                 <Typography variant="caption"  align="left">
-                                    ဖုန်းနံပါတ်
+                                ဖုန္းနံပါတ္
                                 </Typography>
                                 <TextField
                                 name="phone"
@@ -531,7 +511,7 @@ class NewItemDialog extends Component{
                     </Grid>
                     <Grid item xs={6} >
                                 <Typography variant="caption"  align="left">
-                                တိုင်းဒေသကြီး
+                                တိုင္းေဒသႀကီး
                                 </Typography>
                                 <TextField
                                 fullWidth
@@ -550,7 +530,7 @@ class NewItemDialog extends Component{
                     </Grid>
                     <Grid item xs={12} >
                                 <Typography variant="caption"  align="left">
-                                    နေရပ်လိပ်စာ
+                                         ေနရပ္လိပ္စာ
                                 </Typography>                                
                                 <Input
                                     className={classes.textF}
@@ -564,7 +544,7 @@ class NewItemDialog extends Component{
                     </Grid>
                     <Grid item xs={12} >
                                 <Typography variant="caption"  align="left">
-                                    မှတ်ချက်
+                                မွတ္ခ်က္
                                 </Typography> 
                                 <Input
                                     name="note"
@@ -578,11 +558,11 @@ class NewItemDialog extends Component{
                     <Grid item xs={12} >
                         <div className={classes.btm}>                          
                             <Button  variant="outlined" color="secondary" onClick={this.handleClose}>
-                                ပယ်ဖျက်မည်
+                            ပယ္ဖ်က္မည္
                             </Button>
                             <spam className={classes.bpacing}/>
                             <Button  variant="outlined" color="primary" onClick={this.handleConfirm}>
-                                သိမ်းမည်
+                            သိမ္းမည္
                             </Button> 
                         </div>
                     </Grid>                    
@@ -686,7 +666,7 @@ class SupplyItemUI extends Component{
                                 <AppBar position='fixed'>
                                         <Toolbar>                       
                                         <Typography variant="h6" color="inherit" className={classes.flex}>
-                                            {item.name} ကို ဆက်သွယ်ရန်
+                                            {item.name} ကို ဆက္သြယ္ရန္
                                         </Typography>
                                         <IconButton color="inherit" onClick={this.handlePhoneBook} aria-label="Close">
                                             <CloseIcon />
@@ -788,9 +768,9 @@ class SupplyItemView extends Component{
                         }}
                         >
                             <Tabs value={selectedView}>
-                                <Tab label="ကိုယ်ရေးအကျဥ်းချုပ်" onClick={e=>this.handleChange(0)}/>
-                                <Tab label="သိုလှောင်ပစ္စည်းများ" onClick={e=>this.handleChange(1)}/>
-                                <Tab label="လုပ်ဆောင်ချက်များ" onClick={e=>this.handleChange(2)}/>
+                                <Tab label="ကိုယ္ေရးအက်ဥ္းခ်ဳပ္" onClick={e=>this.handleChange(0)}/>
+                                <Tab label="သိုေလွာင္ပစၥည္းမ်ား" onClick={e=>this.handleChange(1)}/>
+                                <Tab label="လုပ္ေဆာင္ခ်က္မ်ား" onClick={e=>this.handleChange(2)}/>
                             </Tabs>
                         </AppBar>    
                         {selectedView === 0 && 
@@ -798,7 +778,7 @@ class SupplyItemView extends Component{
                             <Grid container spacing={24}>
                                 <Grid item xs={12} sm={4}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            တောင်သူအမည်
+                                             ေတာင္သူအမည္
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -807,7 +787,7 @@ class SupplyItemView extends Component{
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            ဆက်သွယ်ရန်ဖုန်းနံပါတ်
+                                    ဆက္သြယ္ရန္ဖုန္းနံပါတ္
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -816,7 +796,7 @@ class SupplyItemView extends Component{
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            တိုင်းဒေသကြီး
+                                    တိုင္းေဒသႀကီး
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -826,7 +806,7 @@ class SupplyItemView extends Component{
                                 
                                 <Grid item xs={12} sm={12}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            ဆက်သွယ်ရန်လိပ်စာ
+                                    ဆက္သြယ္ရန္လိပ္စာ
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -835,7 +815,7 @@ class SupplyItemView extends Component{
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            မှတ်ချက်
+                                    မွတ္ခ်က္
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -870,11 +850,9 @@ class SupplyItemView extends Component{
                         {selectedView === 2 && <TabContainer>
                             <GridList cellHeight={200} spacing={25} cols={1} className={classes.activityGridList}>
                                 <Timeline items={events} />
-                            </GridList>                           
-                              
-     
-                        </TabContainer>}
-                             
+                            </GridList>      
+                        </TabContainer>
+                        }                             
                       </Grid>
                 </Grid>
             </div>
@@ -893,4 +871,4 @@ function TabContainer(props) {
 
 
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Supply))
+export default connect(mapStateToProps, {addSupplyer})(withStyles(styles)(SupplyContent))

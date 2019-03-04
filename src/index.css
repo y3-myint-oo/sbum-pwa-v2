@@ -1,9 +1,12 @@
-body {
+html,body,div,p {
   margin: 0;
   padding: 0;
-  font-family: Padauk-Cache,'Padauk'
+  font-family: 'NotoSansZawgyi', serif;
 }
 @font-face {
-  font-family: Padauk-Cache;
-  src: url('/fonts/PadaukBook-Regular.woff') format('woff');
+  font-family: 'NotoSansZawgyi';
+  src: url('/fonts/zawgyi.eot') format('embedded-opentype'),
+  url('/fonts/zawgyi.ttf') format('truetype');
+   font-weight: normal;
+  font-style: normal;
 }

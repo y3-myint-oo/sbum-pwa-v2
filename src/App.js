@@ -19,63 +19,54 @@ class App extends Component {
     this.checkNetwork = this.checkNetwork.bind(this);
   }
   componentDidMount () {
-    let deferredPrompt;
-    const addBtn = document.querySelector('.add-button');
-    addBtn.style.display = 'none';
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      addBtn.style.display = 'block';
-      addBtn.addEventListener('click', (e) => {
-        addBtn.style.display = 'none';
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt');
-        } else {
-          console.log('User dismissed the A2HS prompt');
-        }
-          deferredPrompt = null;
-        });
-      });
-    });
-
-    //NetworkStatus Checker
     setInterval(this.checkNetwork, 1000);
   }
+
+
+
   checkNetwork(){
-    axios.get(`http://localhost:8081/api/v1/network`)
-      .then(res => {
-        if (res.data.status === 200 ){
-          if (!this.props.setting.isOnline){
-            this.props.networkStatus(true);
-          }else{
-            console.log("message in app already online")
-          }         
-        }
-    }).catch(error => {       
+    fetch('http://localhost:8081/api/v1/network')
+    .then(response => {
+      if(response.ok) return response.json();
+      throw new Error('Request failed.');
+    })
+    .then(data => {
+      if (data.status == 200 ){
+        if (!this.props.setting.isOnline){
+          this.props.networkStatus(true);
+        }else{
+          console.log("message in app already online")
+        }         
+      }else{
         if (this.props.setting.isOnline){
           this.props.networkStatus(false);
         }  else{
           console.log("message in app already offline")
-        }      
+        } 
+      }
     })
-    
+    .catch(error => {
+      if (this.props.setting.isOnline){
+        this.props.networkStatus(false);
+      }  else{
+        console.log("message in app already offline")
+      }  
+    });
   }
+ 
+
   render() {
     console.log(" auth0 ( app.js ) ",this.props.auth0.user)
     if (this.props.auth0.user === null ){
       return (
       <MuiThemeProvider theme={theme}>
         <LandingUx />
-        <button class="add-button">Add to home screen</button>
       </MuiThemeProvider>
       );
     }else {
       return (
         <MuiThemeProvider theme={theme}>
             <HomeUx />
-            <button class="add-button">Add to home screen</button>
         </MuiThemeProvider>
       );
     }    

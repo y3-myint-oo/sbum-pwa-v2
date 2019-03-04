@@ -33,11 +33,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import dateFns from "date-fns";
+import OfflineFeature from '../util/offline';
+
 import MMNumber from '../util/mmnumber';
 
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
-import { readWarehouse} from '../../actions/warehouse_action';
+import { readWarehouse,addWarehouse} from '../../actions/warehouse_action';
 
 const styles = theme => ({   
      Onroot:{
@@ -198,8 +200,8 @@ class WarehouseContent extends Component{
     constructor(props){
         super(props);
         this.state={
-            warehouseItems:[],
-            selectedItem:null,  
+            warehouseItems:this.props.warehouse,
+            selectedItem:this.props.warehouse[0],
             selectedView:0, 
             dialogOpen:false,
             deleteDialogOpen:false,
@@ -226,6 +228,7 @@ class WarehouseContent extends Component{
     fetchNetwork(){
         if (this.props.setting.isOnline){
             this.fetchDatas()
+            //this.setState({isLoading:false})
         }else{
             //From Redux
             this.setState({warehouseItems:this.props.warehouse})
@@ -235,6 +238,7 @@ class WarehouseContent extends Component{
         }
     }
     fetchDatas(){
+        console.log("Fetch Data ...............................")
         axios.all([
             axios.get('http://localhost:8081/api/v1/stock',{
                 headers: {
@@ -242,9 +246,14 @@ class WarehouseContent extends Component{
                 },
             })
         ]).then(axios.spread((stockRes) => {
-            this.setState({warehouseItems:stockRes.data.data})
+            console.log("Fetch Data ............................... (inside then ) ",stockRes.data)
+            if (stockRes.data.data != null){
+                this.setState({warehouseItems:stockRes.data.data})
+                this.setState({selectedItem:this.state.warehouseItems[0]})
+            }else{
+                //Empty Stock in server
+            }
         })).then(data=>{
-            this.setState({selectedItem:this.state.warehouseItems[0]})
             this.setState({isLoading:false})
         });
     }
@@ -294,7 +303,7 @@ class WarehouseContent extends Component{
                             onClick={this.handleDialog}
                             >             
                                 <AddIcon />
-                                ကုန်ပစ္စည်းအသစ်ထည့်မည်
+                                ကုန္ပစၥည္းအသစ္ထည့္မည္
                             </Button>   
                             </div>
                             <Paper className={classes.paper} style={{marginTop:-20,marginLeft:20}}>
@@ -340,9 +349,12 @@ class WarehouseContent extends Component{
                         onClose={this.handleDialog}
                         >
                         <div style={getModalStyle()} className={classes.dialog}>
-                                <NewItemDialog  classes={classes} close={this.handleDialog} snackMsg={this.handleSnack}/> 
+                                <NewItemDialog  classes={classes} close={this.handleDialog} snackMsg={this.handleSnack}
+                                action={this.props}
+                                /> 
                         </div>
                     </Modal>   
+                    
                     <Dialog
                     open={this.state.deleteDialogOpen}
                     onClose={this.handleDeleteDialog}>
@@ -418,7 +430,8 @@ class NewItemDialog extends Component{
         this.state={
             units:null,
 
-            isLoading:true,        
+            isLoading:true,       
+            isOnlineFeature:false, 
             
             name:"",
             serialNumber:"",    // Generated Serail Number
@@ -430,11 +443,22 @@ class NewItemDialog extends Component{
         this.handleClose = this.handleClose.bind(this);
         this.handleSnackMessage= this.handleSnackMessage.bind(this);
         this.fetchDatas=this.fetchDatas.bind(this);
+        this.fetchNetwork=this.fetchNetwork.bind(this);
         this.updateSerialNumber=this.updateSerialNumber.bind(this);
         this.handleChange=this.handleChange.bind(this);
     } 
+   
     componentDidMount(){
-        this.fetchDatas()
+        this.fetchNetwork()
+    }
+    fetchNetwork(){
+        if (this.props.action.setting.isOnline){
+            this.fetchDatas()
+        }else{
+            //Show alter box - offline feature
+            this.setState({isOnlineFeature:true})
+            this.setState({isLoading:false})
+        }
     }
     //Preloading data from backend
     fetchDatas(){
@@ -481,10 +505,11 @@ class NewItemDialog extends Component{
            title:this.state.name,
            unit:this.state.unit,
            price:[stockPrice],
-           network:this.state.network,
+           network:"synced", //create new stock only allowed when online
         };
-        
-       // console.log(" - StockPrice -",params);
+        //Redux Update
+        this.props.action.addWarehouse(params);
+
         axios.post('http://localhost:8081/api/v1/stock',params,{
             headers: {
                 'content-type': 'application/json',
@@ -500,12 +525,13 @@ class NewItemDialog extends Component{
         const { isLoading } = this.state;   
         return(
             <div>
+                
                 {!this.state.isLoading ? (    
                     <div>                       
                     <AppBar position='fixed'>
                             <Toolbar>                       
                             <Typography variant="h6" color="inherit" className={classes.flex}>
-                                ကုန်ပစ္စည်း အမျိုးအစာ အသစ်ထည့်မည်
+                            ကုန္ပစၥည္း အမ်ိဳးအစာ အသစ္ထည့္မည္
                             </Typography>
                             <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
                                 <CloseIcon />
@@ -513,10 +539,14 @@ class NewItemDialog extends Component{
                             </Toolbar>
                     </AppBar>
                     <div style={{paddingTop:50}} >
-                    <Grid container spacing={24}>
+                    {
+                        this.state.isOnlineFeature ? (
+                            <OfflineFeature />
+                        ):(
+                            <Grid container spacing={24}>
                         <Grid item xs={12} >
                                     <Typography variant="caption" gutterBottom align="left">
-                                        ကုန်ပစ္စည်းအမှတ်အသားဃူနစ်
+                                        ကုန္ပစၥည္းအမွတ္အသားဃူနစ္
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Input
@@ -533,7 +563,7 @@ class NewItemDialog extends Component{
                                     <TextField
                                     required
                                     id="standard-required"
-                                    label="ကုန်ပစ္စည်းအမည်"
+                                    label="ကုန္ပစၥည္းအမည္"
                                     value={this.state.name}
                                     onChange={this.handleChange('name')}
                                     className={classes.textField}
@@ -544,7 +574,7 @@ class NewItemDialog extends Component{
                                     <TextField
                                     fullWidth
                                     select
-                                    label="ကုန်ပစ္စည်းအတိုင်းအတာယူနစ်"
+                                    label="ကုန္ပစၥည္းအတိုင္းအတာယူနစ္"
                                     value={this.state.unit}                                   
                                     margin="normal"
                                     onChange={this.handleChange('unit')}
@@ -558,7 +588,7 @@ class NewItemDialog extends Component{
                         </Grid>
                         <Grid item xs={6} >
                                     <Typography variant="caption" gutterBottom align="left">
-                                        လက်ရှိရောင်းစျေး
+                                    လက္ရွိေရာင္းေစ်း
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Input
@@ -571,7 +601,7 @@ class NewItemDialog extends Component{
                         </Grid>
                         <Grid item xs={6} >
                                     <Typography variant="caption" gutterBottom align="left">
-                                        ၀ယ်စျေး
+                                    ၀ယ္ေစ်း
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Input
@@ -584,14 +614,16 @@ class NewItemDialog extends Component{
                         </Grid>
                         <Grid item xs={6} >
                             <Button  variant="outlined" color="primary" onClick={this.handleSnackMessage}>
-                                သိမ်းမည်
+                            သိမ္းမည္
                             </Button>   
                             <spam className={classes.bpacing}/>
                             <Button  variant="outlined" color="secondary" onClick={this.handleClose}>
-                                ပယ်ဖျက်မည်
+                            ပယ္ဖ်က္မည္
                             </Button>
                         </Grid>
                     </Grid>
+                    )}
+                    
                     </div>
                     </div>
                         ):(
@@ -667,7 +699,7 @@ class WarehouseItemView extends Component{
                         <Grid container className={classes.display}>
                             <Grid item xs={6}>
                                 <Typography variant="caption" gutterBottom align="left">
-                                    ကုန်ပစ္စည်းအမည်
+                                ကုန္ပစၥည္းအမည္
                                 </Typography> 
                                 <spam className={classes.spacing} /> 
                                 <Typography variant="title" align="left">
@@ -676,7 +708,7 @@ class WarehouseItemView extends Component{
                             </Grid>
                             <Grid item xs={6}>
                                 <Typography variant="caption" gutterBottom align="left">
-                                    ကုန်ပစ္စည်းအတိုင်းအတာယူနစ်
+                                ကုန္ပစၥည္းအတိုင္းအတာယူနစ္
                                 </Typography>
                                 <spam className={classes.spacing} />
                                 <Typography variant="title" align="left">
@@ -685,14 +717,14 @@ class WarehouseItemView extends Component{
                             </Grid>  
                             <Grid item xs={6}>
                                 <Typography variant="caption" gutterBottom align="left">
-                                    လက်ရှိရောင်းစျေး
+                                လက္ရွိေရာင္းေစ်း
                                 </Typography>
                                 <spam className={classes.spacing} /> 
                                 <Typography variant="title" align="left">
                                 {
                                     (typeof data.price !== 'undefined') && (typeof data.price[data.price.length-1] !== 'undefined') && (
                                         <div>
-                                             {data.price[data.price.length-1].sprice}   ကျပ်
+                                             {data.price[data.price.length-1].sprice}   က်ပ္
                                         </div>
                                     )                                   
                                 }
@@ -701,14 +733,14 @@ class WarehouseItemView extends Component{
                             </Grid>    
                             <Grid item xs={6}>
                                 <Typography variant="caption" gutterBottom align="left">
-                                    ၀ယ်စျေး
+                                ၀ယ္ေစ်း
                                 </Typography>
                                 <spam className={classes.spacing} />
                                 <Typography variant="title" align="left">
                                 {
                                     (typeof data.price !== 'undefined') && (typeof data.price[data.price.length-1] !== 'undefined') && (
                                         <div>
-                                             {data.price[data.price.length-1].bprice}  ကျပ်
+                                             {data.price[data.price.length-1].bprice}  က်ပ္
                                         </div>
                                     )
                                 }
@@ -717,11 +749,11 @@ class WarehouseItemView extends Component{
                             </Grid>  
                             <Grid item xs={6}>
                                 <Typography variant="caption" gutterBottom align="left">
-                                    စုစုပေါင်းတန်ဖိုး
+                                စုစုေပါင္းတန္ဖိုး
                                 </Typography>
                                 <spam className={classes.spacing} />
                                 <Typography variant="title" align="left">
-                                    {data.totalPirce} ကျပ်
+                                    {data.totalPirce} က်ပ္
                                 </Typography>
                             </Grid>
                             <Grid item xs={6}>
@@ -750,9 +782,9 @@ class WarehouseItemView extends Component{
                         }}
                         >
                             <Tabs value={selectedView}>
-                                <Tab label="အရောင်းစာရင်း" onClick={e=>this.handleChange(0)}/>
-                                <Tab label="အ၀ယ်စာရင်း" onClick={e=>this.handleChange(1)}/>
-                                <Tab label="ရောင်းစျေး ၊ ၀ယ်စျေး" onClick={e=>this.handleChange(2)}/>
+                                <Tab label="အေရာင္းစာရင္း" onClick={e=>this.handleChange(0)}/>
+                                <Tab label="အ၀ယ္စာရင္း" onClick={e=>this.handleChange(1)}/>
+                                <Tab label="ေရာင္းေစ်း ၊ ၀ယ္ေစ်း" onClick={e=>this.handleChange(2)}/>
                             </Tabs>
                         </AppBar>    
                         {selectedView === 0 && 
@@ -803,4 +835,4 @@ function TabContainer(props) {
 
 
 
-export default connect(mapStateToProps, { readWarehouse})(withStyles(styles)(WarehouseContent))
+export default connect(mapStateToProps, { readWarehouse, addWarehouse})(withStyles(styles)(WarehouseContent))

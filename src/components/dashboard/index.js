@@ -45,7 +45,7 @@ class DashBoard extends Component{
         console.log("-----> nav handle")
     }
     componentDidMount () {
-        
+       // alert("Hello first component did mount (dashboard) ",this.props.setting.isOnline)
     }
     render(){
         const { classes } =this.props;
@@ -66,7 +66,7 @@ class DashBoard extends Component{
                             <MenuIcon fontSize="large" />
                         </IconButton>
                         <Typography variant="h6" color="primary">
-                            ကျောက်သင်ပုန်း
+                            မွုလစာမ်က္နာ
                         </Typography>
                         <div className={classes.grow} />
                         <div className={classes.search}>

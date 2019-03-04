@@ -44,7 +44,7 @@ class DashContent extends Component{
                                 <Grid item md={12} sm={12} xs={12}>
                                 <Paper className={classes.storeBox}>
                                         <Typography variant="subtitle1" gutterBottom align="center" color="primary">
-                                        ဂိုထောင် သိုလှောင်မှုအခြေအနေ
+                                        ဂိုေထာင္ သိုေလွာင္မွဳအေျခအေန
                                         </Typography> 
                                         <StoreInfoUX />                                       
                                 </Paper>
@@ -52,7 +52,7 @@ class DashContent extends Component{
                                 <Grid item md={12} sm={12} xs={12}>
                                 <Paper className={classes.storeBox}>
                                         <Typography variant="subtitle1" gutterBottom align="center" color="primary">
-                                        Employee list
+                                        ဝန္ထမ္းစာရင္း
                                         </Typography> 
                                         <EmployeeInfoUX />                                       
                                 </Paper>
@@ -64,7 +64,7 @@ class DashContent extends Component{
                             <Grid item md={12} sm={12} xs={12}>
                                 <Paper className={classes.storeBox}>
                                     <Typography variant="subtitle1" gutterBottom align="center" color="primary">
-                                        each stock(item) price history (monthly)
+                                    ကုန္ပစၥည္း ေစ်းႏႈန္း ( လ အလိုက္ စာရင္း )
                                     </Typography> 
                                     <StocKInfoUX />                             
                                 </Paper>

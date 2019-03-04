@@ -30,6 +30,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Select from '@material-ui/core/Select';
+import OfflineFeature from '../util/offline';
 
 
 const styles = theme => ({
@@ -80,66 +81,15 @@ const styles = theme => ({
     }
 });
 
-//http://localhost:8081/api/v1/unit
-class Unit extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            isLoading: true,          
-            error: null,
-            units:[],
-        }
-        this.fetchUnits=this.fetchUnits.bind(this)
-    } 
-    componentDidMount() {
-        this.fetchUnits();
-    }
-    fetchUnits(){
-        axios.get('http://localhost:8081/api/v1/unit',{
-            headers: {
-                'content-type': 'application/json',
-            },
-        }).then(res => {
-            //console.log(" response Unit data ", res.data.data)
-            this.setState({units:res.data.data})
-        }).then(data=>{
-            this.setState({isLoading:false})
-            //console.log(" response isloaing false dat")
-        })
-    }
-    render(){
-        const { isLoading,units, error } = this.state;       
-        const { classes , menuToggle } = this.props;
-        return(
-            <div>
-                {!this.state.isLoading ? (
-                            <UnitContent classes={classes} units={this.state.units}/>
-                        ):(
-                            <div className={classes.sweetLoading}>
-                                <BeatLoader
-                               // className={override}
-                                sizeUnit={"px"}
-                                size={20}
-                                color={'#357a38'}
-                                loading={this.state.isLoading}
-                                />
-                            </div> 
-                )} 
-            </div>
-        )
-    }
-}
-
-
-
-
-
 class UnitContent extends Component{
     constructor(props){
         super(props);
         this.state={
             selectedIndex:0,
-            units:this.props.units,
+            isLoading: true,  
+            isOnlineFeature:false,         
+            error: null,
+            units:[],
             nunit:"",
             dunit:null, // Delete Unit Selection
             mappedUnit:"",
@@ -163,7 +113,32 @@ class UnitContent extends Component{
         this.handleSelectChange=this.handleSelectChange.bind(this)
         this.handleCorssChange=this.handleCorssChange.bind(this)
         this.addNewBox=this.addNewBox.bind(this)
+        this.fetchUnits=this.fetchUnits.bind(this)
     } 
+
+    componentDidMount() {
+        this.fetchNetwork();
+    }
+    fetchNetwork(){
+        if (this.props.setting.isOnline){
+            this.fetchUnits()
+        }else{
+            //From Redux
+            this.setState({isOnlineFeature:true})
+            this.setState({isLoading:false})
+        }
+    }
+    fetchUnits(){
+        axios.get('http://localhost:8081/api/v1/unit',{
+            headers: {
+                'content-type': 'application/json',
+            },
+        }).then(res => {
+            this.setState({units:res.data.data})
+        }).then(data=>{
+            this.setState({isLoading:false})
+        })
+    }
     handleBack(){
         if ( this.state.selectedIndex == 0 ){
             this.setState({selectedIndex:this.state.units.length-1})
@@ -187,7 +162,6 @@ class UnitContent extends Component{
        //Fetch API
         const params = {
             name:this.state.dunit.name,
-            //mid - automatic fill from server-side
             cross:"",
             map:this.state.units[this.state.selectedIndex].name,
         };
@@ -283,240 +257,265 @@ class UnitContent extends Component{
         const selectedUnit = units[this.state.selectedIndex];
         const { classes } = this.props;
         return(
-            <div className={classes.root}>             
-                <div className={classes.box}>
-                    <Grid container>
-                        <Grid item md={4}> 
-                            <Grid container spacing={8}>
-                                <Grid item xs={6} sm={6} md={6} align="left">
-                                        <Button                                        
-                                            onClick={this.handleBack}
-                                            variant="outlined" color="primary"
-                                            >
-                                           အနောက်သို့
-                                        </Button>
-                                </Grid>
-                                <Grid item xs={6} sm={6} md={6} align="right">
-                                        <Button                                                                                       
-                                            onClick={this.handleForward}
-                                            variant="outlined" color="primary"
-                                            >
-                                            အရှေ့သို့
-                                        </Button>
-                                </Grid>
-                                <Grid item md={12}>
-                                    <Card className={classes.card}>
-                                        <CardActionArea>
-                                            <CardContent>
-                                                <Typography gutterBottom variant="title" align="center">
-                                                    {selectedUnit.count}
-                                                </Typography>
-                                                <br />
+            <div>
 
-                                                <Typography gutterBottom variant="h2" align="center">
-                                                    {selectedUnit.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>    
-                                </Grid>
-                                <Grid item md={12}>
-                                    <Grid container>
-                                        <Grid item md={12} >
-                                            <TextField
-                                            label="အတိုင်းအတာယူနစ်"
-                                            onInput={this.handleNewUnit}
-                                            //defaultValue="Default Value"
-                                            className={classes.unitField}
-                                            helperText="၁ ယူနစ်စံချိန်နှုန်းဖြင့် တိုင်းတာသည်"
-                                            margin="normal"
-                                            variant="outlined"
-                                            value={this.state.nunit}
-                                            fullWidth
-                                            />
-                                        </Grid>
-                                        <Grid item md={6} align="center">
-                                            <Button variant="outlined" color="primary" onClick={this.addNewUnit}>
-                                                ယူနစ်အသစ်ထည့်မည်
-                                            </Button>
-                                        </Grid>
-                                        <Grid item md={6} align="center">
-                                            <Button variant="outlined" color="secondary" onClick={this.deleteUnit}>
-                                                ယူနစ်အားဖျက်မည်
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                   
-                                    
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item md={8}>
-                            <GridList className={classes.gridList} cellHeight="130" spacing={8} cols={4}>
-                                    <div>
-                                    <Card className={classes.card2}>
-                                    <CardActionArea onClick={this.handleAddBox}>
-                                        <CardContent>
-                                            <Typography variant="h6" align="center">
-                                                    ပြောင်းလဲနှုန်း
-                                            </Typography>
-                                            <Typography color="primary" variant="h2" align="center">
-                                                +
-                                            </Typography>
-                                        </CardContent> 
-                                    </CardActionArea>                                                
-                                    </Card>  
-                                    </div>                              
-                                {                                  
-                                  selectedUnit.converters!=null && (
-                                    selectedUnit.converters.map((item,i) => (
-                                        <div key={i}>
-                                           <Card className={classes.card2}>
-                                           <CardActionArea onClick={e=>this.handleDeleteBox(item)}>
-                                               <CardContent>
-                                                   <Typography gutterBottom variant="h5" align="center">
-                                                       {item.name}
-                                                   </Typography>
-                                                   <Typography gutterBottom variant="h4" align="center">
-                                                       {item.cross}
-                                                   </Typography>
-                                               </CardContent>   
-                                           </CardActionArea>                                          
-                                           </Card>                                                
-                                       </div>
-                                    ))
-                                  )                                  
-                                }                                                                         
-                                
-                            </GridList>
-                        </Grid>
-                    </Grid>
+                 {
+                     this.state.isOnlineFeature ? (                     
+                        <OfflineFeature />
+                     ):(    
+                        <div>
+                            {!this.state.isLoading ? (
+                             <div className={classes.root}>             
+                             <div className={classes.box}>
+                                 <Grid container>
+                                     <Grid item md={4}> 
+                                         <Grid container spacing={8}>
+                                             <Grid item xs={6} sm={6} md={6} align="left">
+                                                     <Button                                        
+                                                         onClick={this.handleBack}
+                                                         variant="outlined" color="primary"
+                                                         >
+                                                        အနောက်သို့
+                                                     </Button>
+                                             </Grid>
+                                             <Grid item xs={6} sm={6} md={6} align="right">
+                                                     <Button                                                                                       
+                                                         onClick={this.handleForward}
+                                                         variant="outlined" color="primary"
+                                                         >
+                                                         အရှေ့သို့
+                                                     </Button>
+                                             </Grid>
+                                             <Grid item md={12}>
+                                                 <Card className={classes.card}>
+                                                     <CardActionArea>
+                                                         <CardContent>
+                                                             <Typography gutterBottom variant="title" align="center">
+                                                                 {selectedUnit.count}
+                                                             </Typography>
+                                                             <br />
+             
+                                                             <Typography gutterBottom variant="h2" align="center">
+                                                                 {selectedUnit.name}
+                                                             </Typography>
+                                                         </CardContent>
+                                                     </CardActionArea>
+                                                 </Card>    
+                                             </Grid>
+                                             <Grid item md={12}>
+                                                 <Grid container>
+                                                     <Grid item md={12} >
+                                                         <TextField
+                                                         label="အတိုင်းအတာယူနစ်"
+                                                         onInput={this.handleNewUnit}
+                                                         //defaultValue="Default Value"
+                                                         className={classes.unitField}
+                                                         helperText="၁ ယူနစ်စံချိန်နှုန်းဖြင့် တိုင်းတာသည်"
+                                                         margin="normal"
+                                                         variant="outlined"
+                                                         value={this.state.nunit}
+                                                         fullWidth
+                                                         />
+                                                     </Grid>
+                                                     <Grid item md={6} align="center">
+                                                         <Button variant="outlined" color="primary" onClick={this.addNewUnit}>
+                                                             ယူနစ်အသစ်ထည့်မည်
+                                                         </Button>
+                                                     </Grid>
+                                                     <Grid item md={6} align="center">
+                                                         <Button variant="outlined" color="secondary" onClick={this.deleteUnit}>
+                                                             ယူနစ်အားဖျက်မည်
+                                                         </Button>
+                                                     </Grid>
+                                                 </Grid>
+                                                
+                                                 
+                                             </Grid>
+                                         </Grid>
+                                     </Grid>
+                                     <Grid item md={8}>
+                                         <GridList className={classes.gridList} cellHeight="130" spacing={8} cols={4}>
+                                                 <div>
+                                                 <Card className={classes.card2}>
+                                                 <CardActionArea onClick={this.handleAddBox}>
+                                                     <CardContent>
+                                                         <Typography variant="h6" align="center">
+                                                                 ပြောင်းလဲနှုန်း
+                                                         </Typography>
+                                                         <Typography color="primary" variant="h2" align="center">
+                                                             +
+                                                         </Typography>
+                                                     </CardContent> 
+                                                 </CardActionArea>                                                
+                                                 </Card>  
+                                                 </div>                              
+                                             {                                  
+                                               selectedUnit.converters!=null && (
+                                                 selectedUnit.converters.map((item,i) => (
+                                                     <div key={i}>
+                                                        <Card className={classes.card2}>
+                                                        <CardActionArea onClick={e=>this.handleDeleteBox(item)}>
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h5" align="center">
+                                                                    {item.name}
+                                                                </Typography>
+                                                                <Typography gutterBottom variant="h4" align="center">
+                                                                    {item.cross}
+                                                                </Typography>
+                                                            </CardContent>   
+                                                        </CardActionArea>                                          
+                                                        </Card>                                                
+                                                    </div>
+                                                 ))
+                                               )                                  
+                                             }                                                                         
+                                             
+                                         </GridList>
+                                     </Grid>
+                                 </Grid>
+                             </div>
+                             <Dialog
+                             open={this.state.deleteBoxShow}
+                             onClose={this.handleDeleteBox}
+                             aria-labelledby="alert-dialog-title"
+                             aria-describedby="alert-dialog-description"
+                             >
+                             <DialogTitle id="alert-dialog-title">{"ပြောင်းလဲနှုန်းထားအား ပယ်ဖျက်လိုပါသလား"}</DialogTitle>
+                             <DialogContent>
+                                 <DialogContentText id="alert-dialog-description">
+                                 {
+                                     this.state.dunit !=null && (
+                                         <div>
+                                             ၁ {selectedUnit.name} ={this.state.dunit.cross} {this.state.dunit.name} အတိုင်းအတာယူနစ်ရှိသည်။
+                                         </div>
+                                     )
+                                 }                  
+                                 </DialogContentText>
+                             </DialogContent>
+                             <DialogActions>                   
+                                 <Button onClick={this.handleDeleteBox} color="secondary">
+                                 ပယ်မဖျက်ပါ
+                                 </Button>
+                                 <Button onClick={this.handleDeleteBoxConfrim} color="primary">
+                                 ပယ်ဖျက်မည်
+                                 </Button>
+                             </DialogActions>
+                             </Dialog>
+                             <Dialog
+                             open={this.state.addBoxShow}
+                             onClose={this.handleAddBox}
+                             aria-labelledby="alert-dialog-title"
+                             aria-describedby="alert-dialog-description"
+                             >
+                             <DialogTitle id="alert-dialog-title">{"ပြောင်းလဲနှုန်းထားအသစ် ထည့်လိုပါသလား"}</DialogTitle>
+                             <DialogContent>
+                                 <DialogContentText id="alert-dialog-description">
+                                 <Grid container spacing={8}>
+                                     <Grid item md={12}>
+                                         <Select
+                                             
+                                             value={this.state.mappedUnit}
+                                             onChange={this.handleSelectChange}
+                                             inputProps={{
+                                                 name: 'age',
+                                                 padding:'2%',
+                                             }}
+                                             fullWidth
+                                         >    
+                                         <MenuItem value="">
+                                             <em>None</em>
+                                         </MenuItem>  
+                                         {
+                                             this.state.units.map((item,i) => (
+                                                 <MenuItem value={item.name}>{item.name}</MenuItem>
+                                             ))
+                                         }
+                                         </Select>
+                                     </Grid>
+                                     <Grid item md={12}>
+                                     <TextField
+                                         //id="standard-number"
+                                         label="အချိန်အဆ"
+                                         value={this.state.mappedCross}
+                                         onChange={this.handleCorssChange}
+                                         type="number"
+                                        // className={classes.textField}
+                                         InputLabelProps={{
+                                             shrink: true,
+                                             padding:'2%',
+                                         }}
+                                         margin="normal"
+                                         fullWidth
+                                     />
+                                     </Grid>
+                                 </Grid>
+                                       
+                             </DialogContentText>
+                             </DialogContent>
+                             <DialogActions>                   
+                                 <Button onClick={this.handleAddBox} color="secondary">
+                                 မထည့်ပါ
+                                 </Button>
+                                 <Button onClick={this.addNewBox} color="primary">
+                                 ထည့်မည်
+                                 </Button>
+                             </DialogActions>
+                             </Dialog>        
+             
+                             <Snackbar                    
+                                 anchorOrigin={{
+                                     vertical: 'bottom',
+                                     horizontal: 'left',
+                                 }}
+                                // style={{backgroundColor:'blue'}}
+                                 open={this.state.snackOpen}
+                                 onClose={this.handleSnack}
+                                 ContentProps={{
+                                     'aria-describedby': 'message-id',
+                                 }}
+                                 message={
+                                     <span id="message-id"                        
+                                     >{this.state.snackMessage}</span>
+                                 }
+                                 action={[
+                                     <Button key="undo" color="secondary" size="small" onClick={this.refresh}>
+                                     REFRESH
+                                     </Button>,
+                                     <IconButton
+                                        color="inherit"
+                                       onClick={this.handleSnack}
+                                     >
+                                       <CloseIcon />
+                                     </IconButton>,
+                                     
+                                   ]}
+                             />   
+                         </div>
+                        ):(
+                            <div className={classes.sweetLoading}>
+                                <BeatLoader
+                               // className={override}
+                                sizeUnit={"px"}
+                                size={20}
+                                color={'#357a38'}
+                                loading={this.state.isLoading}
+                                />
+                            </div> 
+                )} 
                 </div>
-                <Dialog
-                open={this.state.deleteBoxShow}
-                onClose={this.handleDeleteBox}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                >
-                <DialogTitle id="alert-dialog-title">{"ပြောင်းလဲနှုန်းထားအား ပယ်ဖျက်လိုပါသလား"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                    {
-                        this.state.dunit !=null && (
-                            <div>
-                                ၁ {selectedUnit.name} ={this.state.dunit.cross} {this.state.dunit.name} အတိုင်းအတာယူနစ်ရှိသည်။
-                            </div>
-                        )
-                    }                  
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>                   
-                    <Button onClick={this.handleDeleteBox} color="secondary">
-                    ပယ်မဖျက်ပါ
-                    </Button>
-                    <Button onClick={this.handleDeleteBoxConfrim} color="primary">
-                    ပယ်ဖျက်မည်
-                    </Button>
-                </DialogActions>
-                </Dialog>
-                <Dialog
-                open={this.state.addBoxShow}
-                onClose={this.handleAddBox}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                >
-                <DialogTitle id="alert-dialog-title">{"ပြောင်းလဲနှုန်းထားအသစ် ထည့်လိုပါသလား"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                    <Grid container spacing={8}>
-                        <Grid item md={12}>
-                            <Select
-                                
-                                value={this.state.mappedUnit}
-                                onChange={this.handleSelectChange}
-                                inputProps={{
-                                    name: 'age',
-                                    padding:'2%',
-                                }}
-                                fullWidth
-                            >    
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>  
-                            {
-                                this.state.units.map((item,i) => (
-                                    <MenuItem value={item.name}>{item.name}</MenuItem>
-                                ))
-                            }
-                            </Select>
-                        </Grid>
-                        <Grid item md={12}>
-                        <TextField
-                            //id="standard-number"
-                            label="အချိန်အဆ"
-                            value={this.state.mappedCross}
-                            onChange={this.handleCorssChange}
-                            type="number"
-                           // className={classes.textField}
-                            InputLabelProps={{
-                                shrink: true,
-                                padding:'2%',
-                            }}
-                            margin="normal"
-                            fullWidth
-                        />
-                        </Grid>
-                    </Grid>
-                          
-                </DialogContentText>
-                </DialogContent>
-                <DialogActions>                   
-                    <Button onClick={this.handleAddBox} color="secondary">
-                    မထည့်ပါ
-                    </Button>
-                    <Button onClick={this.addNewBox} color="primary">
-                    ထည့်မည်
-                    </Button>
-                </DialogActions>
-                </Dialog>        
-
-                <Snackbar                    
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                   // style={{backgroundColor:'blue'}}
-                    open={this.state.snackOpen}
-                    onClose={this.handleSnack}
-                    ContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
-                    message={
-                        <span id="message-id"                        
-                        >{this.state.snackMessage}</span>
-                    }
-                    action={[
-                        <Button key="undo" color="secondary" size="small" onClick={this.refresh}>
-                        REFRESH
-                        </Button>,
-                        <IconButton
-                           color="inherit"
-                          onClick={this.handleSnack}
-                        >
-                          <CloseIcon />
-                        </IconButton>,
-                        
-                      ]}
-                />   
+                )}
             </div>
+           
         )
     }
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
     return {
-        menuToggle : state.MenuToggle
+        setting:state.setting,
+        auth0: state.auth0,
+      //  unit:state.unit, 
     };
-}
+} 
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Unit))
+export default connect(mapStateToProps, null)(withStyles(styles)(UnitContent))

@@ -19,7 +19,7 @@ function auth0(state = authData, action) {
             //TODO: API Call to backend - auth0
             //const isAuth=state.find(user => user.userId === action.data.name)
             //return initialUsers.map((user)=>{
-              if("admin" === action.data.name && "xdE@zsw!@$XD"=== action.data.pass) {
+            if("admin" === action.data.name && "xdE@zsw!@$XD"=== action.data.pass) {
                 console.log("success auth0")
                 //authData.user=action.data
                 return Object.assign({}, state, {

@@ -315,8 +315,7 @@ class SupplyContent extends Component{
                         <Button variant="extendedFab" aria-label="addNewItem" fullWidth className={classes.addButton}
                         onClick={this.handleDialog}
                         >             
-                          
-                            ပွဲရုံး အသစ်ထည့်မည်
+                           ပြဲ႐ုံး အသစ္ထည့္မည္
                         </Button>   
                         </div>
                         <Paper className={classes.paper} style={{marginTop:-20}}>
@@ -426,7 +425,7 @@ class SupplyItemUI extends Component{
                                 <AppBar position='fixed'>
                                         <Toolbar>                       
                                         <Typography variant="h6" color="inherit" className={classes.flex}>
-                                            {item.name} ကို ဆက်သွယ်ရန်
+                                            {item.name} ကို ဆက္သြယ္ရန္
                                         </Typography>
                                         <IconButton color="inherit" onClick={this.handlePhoneBook} aria-label="Close">
                                             <CloseIcon />
@@ -539,17 +538,17 @@ class SupplyItemView extends Component{
                         }}
                         >
                             <Tabs value={selectedView}>
-                                <Tab label="ကိုယ်ရေးအကျဥ်းချုပ်" onClick={e=>this.handleChange(0)}/>
-                                <Tab label="ပေးပို့ပြိးသောပစ္စည်းများ" onClick={e=>this.handleChange(1)}/>
+                                <Tab label="ကိုယ္ေရးအက်ဥ္းခ်ဳပ္" onClick={e=>this.handleChange(0)}/>
+                                <Tab label="ေပးပို႔ၿပိးေသာပစၥည္းမ်ား" onClick={e=>this.handleChange(1)}/>
                                 <Tab onClick={e=>this.handleChange(2)}
                                 label={
                                     <Badge className={classes.BadgePadding} color="secondary" badgeContent={5}>
-                                      မှာယူထားသောပစ္စည်းများ
+                                      မွာယူထားေသာပစၥည္းမ်ာ
                                     </Badge>
                                 }
                                 
                                 />
-                                <Tab label="လုပ်ဆောင်ချက်များ" onClick={e=>this.handleChange(3)}/>
+                                <Tab label="လုပ္ေဆာင္ခ်က္မ်ား" onClick={e=>this.handleChange(3)}/>
                             </Tabs>
                         </AppBar>    
                         {selectedView === 0 && 
@@ -557,7 +556,7 @@ class SupplyItemView extends Component{
                             <Grid container spacing={24}>
                                 <Grid item xs={12} sm={4}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            ပွဲရုံ အမည်
+                                    ပြဲ႐ုံ အမည္
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -566,7 +565,7 @@ class SupplyItemView extends Component{
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            ပိုင်ရှင် အမည်
+                                    ပိုင္ရွင္ အမည္
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -576,7 +575,7 @@ class SupplyItemView extends Component{
                                 
                                 <Grid item xs={12} sm={4}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            တိုင်းဒေသကြီး
+                                    တိုင္းေဒသႀကီး
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -585,7 +584,7 @@ class SupplyItemView extends Component{
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            ဆက်သွယ်ရန်ဖုန်းနံပါတ်
+                                    ဆက္သြယ္ရန္ဖုန္းနံပါတ္
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <div className={classes.phones}>
@@ -605,7 +604,7 @@ class SupplyItemView extends Component{
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            ဆက်သွယ်ရန်လိပ်စာ
+                                    ဆက္သြယ္ရန္လိပ္စာ
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -614,7 +613,7 @@ class SupplyItemView extends Component{
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
                                     <Typography variant="caption" gutterBottom align="left">
-                                            မှတ်ချက်
+                                    မွတ္ခ်က္
                                     </Typography> 
                                     <spam className={classes.spacing} /> 
                                     <Typography variant="title" align="left">
@@ -662,7 +661,7 @@ class SupplyItemView extends Component{
                                                     <ExpansionPanelDetails className={classes.details}>
                                                         <div className={classes.column}>
                                                             <Typography variant="body2" align="center" color="#fff">
-                                                                 ကုန်ပစ္စည်းစတင်မှာယူသောနေ့ 
+                                                            ကုန္ပစၥည္းစတင္မွာယူေသာေန႔ 
                                                             </Typography>
                                                             <spam className={classes.bpacing}/>
                                                             <Typography variant="subheading" align="center" color="#fff">
@@ -671,7 +670,7 @@ class SupplyItemView extends Component{
                                                         </div>
                                                         <div className={classes.column}>
                                                             <Typography variant="body2" align="center" color="#fff">
-                                                                 စုစုပေါင်းပမာဏ 
+                                                            စုစုေပါင္းပမာဏ 
                                                             </Typography>  
                                                             <spam className={classes.bpacing}/>
                                                             <Typography variant="h5" align="center" color="#fff">
@@ -683,15 +682,15 @@ class SupplyItemView extends Component{
                                                                 <Typography variant="body2" align="right">
                                                                 {
                                                                     !i.all &&(
-                                                                        <spam>ပေးပို့ရန်ကျန်ရှိနေသေးပါသည်</spam>
+                                                                        <spam>ေပးပို႔ရန္က်န္ရွိေနေသးပါသည္</spam>
                                                                     )}
                                                                 {
                                                                     i.all &&(
-                                                                        <spam>မှာရှိထားသည့်ကုန်ပစ္စည်း အရေအတွက်အားလုံးပေးပို့ပြီးပါသည်</spam>
+                                                                        <spam>မွာရွိထားသည့္ကုန္ပစၥည္း အေရအတြက္အားလုံးေပးပို႔ၿပီးပါသည္</spam>
                                                                     )}
                                                                 <br />
                                                                 <a href="#sub-labels-and-columns" className={classes.link}>
-                                                                    စာရင်းကြည့်မည်
+                                                                စာရင္းၾကည့္မည္
                                                                 </a>
                                                                 </Typography>
                                                                                                    
@@ -701,12 +700,12 @@ class SupplyItemView extends Component{
                                                         <Divider />
                                                         <ExpansionPanelActions>                                                      
                                                             <Button  variant="outlined" color="secondary" onClick={this.handleSnackMessage}>
-                                                                ပယ်ဖျက်မည်
+                                                            ပယ္ဖ်က္မည္
                                                             </Button>
                                                             <spam className={classes.bpacing}/>
                                                             {i.all && (
                                                                 <Button  variant="outlined" color="primary" onClick={this.handleSnackMessage}>
-                                                                 ပေးပိုပြီးပါသည်
+                                                                 ေပးပိုၿပီးပါသည္
                                                                 </Button>
                                                             )}
                                                            

@@ -15,7 +15,8 @@ const styles = theme => ({
      },
 });
 
-class Landing extends Component{   
+class Landing extends Component{ 
+      
     render(){
         const { classes } = this.props;
         return(
@@ -31,10 +32,10 @@ class Landing extends Component{
                                 <div class='slide3'></div>
                             </div>
                             <div class='header'>
-                                ဦးမြင့်
+                                ဦးျမင့္
                             </div>  
                             <div class='label'>
-                                တောင်သူများနင့်အမြဲအတူ
+                                ေတာင္သူမ်ားနင့္အၿမဲအတူ
                             </div>    
                         </div>
                         <div class='frame'>
@@ -48,6 +49,28 @@ class Landing extends Component{
 }
 
 class Menu extends Component{
+    componentDidMount(){
+        let deferredPrompt;
+        const addBtn = document.querySelector('.add-button');
+        addBtn.style.display = 'none';
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          addBtn.style.display = 'block';
+          addBtn.addEventListener('click', (e) => {
+            addBtn.style.display = 'none';
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the A2HS prompt');
+            } else {
+              console.log('User dismissed the A2HS prompt');
+            }
+              deferredPrompt = null;
+            });
+          });
+        });
+    }
     render(){
         const { style } = this.props;
         return (
@@ -60,7 +83,7 @@ class Menu extends Component{
             style={{ paddingTop: '60%' }}
           >
             <Grid item>
-                <Button variant="fab" color="secondary" className={style.fab}> 
+                <Button variant="fab" class="add-button" color="secondary" className={style.fab}> 
                    <RegIcon />
                 </Button>
             </Grid>

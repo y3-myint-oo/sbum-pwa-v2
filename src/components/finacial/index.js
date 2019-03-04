@@ -64,7 +64,7 @@ class DashBoard extends Component{
                             <MenuIcon fontSize="large" />
                         </IconButton>
                         <Typography variant="h6" color="primary">
-                            Finace
+                        ေငြေျကးစီမံမႈ
                         </Typography>
                         <div className={classes.grow} />
                         <div className={classes.search}>

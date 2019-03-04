@@ -64,7 +64,7 @@ class DashBoard extends Component{
                             <MenuIcon fontSize="large" />
                         </IconButton>
                         <Typography variant="h6" color="primary">
-                            Agent
+                        ပြဲရံုမ်ား
                         </Typography>
                         <div className={classes.grow} />
                         <div className={classes.search}>
